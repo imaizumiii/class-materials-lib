@@ -10,9 +10,18 @@ from ..utils.text import latex_escape
 @dataclass
 class LatexRenderer(Renderer):
     docclass: str = "article"
+    docclass_options: str = ""
     preamble: str = r"\usepackage{amsmath, amssymb}\n"
     begin_document: str = r""
     end_document: str = r""
+
+    # ▼ 追加：add_terms タイトルの見た目（お好みでデフォルト変更OK）
+    terms_title_marker: str = "●"      # 目印（例: "■" "◆" "●" "▶"）
+    terms_title_bg: str = "blue!6"     # タイトル帯の背景色
+    terms_title_fg: str = "black"      # タイトル文字色
+    terms_box_arc: str = "5pt"         # 枠角の丸み
+    terms_box_rule: str = "0.4pt"      # 枠線の太さ
+    terms_box_sep: str = "6pt"         # 内側余白（padding）
 
     # 既存の terms_box/terms_box_options があっても無視してOK（後方互換のため残してもよい）
 
@@ -34,38 +43,86 @@ class LatexRenderer(Renderer):
             return self._render_terms(n)
         raise TypeError(f"Unsupported node: {type(n).__name__}")
 
+    # path: lectgen/renderers/latex.py
     def _render_title(self, t: Title) -> str:
         title = t.title if t.raw else latex_escape(t.title)
         subtitle = ""
         if t.subtitle:
             subtitle_text = t.subtitle if t.raw else latex_escape(t.subtitle)
-            subtitle = f"\\\\\\large {subtitle_text}"
-        # \maketitle は使わない
-        return f"\\begin{{center}}\n\\LARGE {title}{subtitle}\n\\end{{center}}"
-
+            # サブタイトルは小さめ・灰色
+            subtitle = f"\\\\{{\\normalsize\\color{{gray!60}} {subtitle_text}}}"
+        # tcolorbox で左帯＋角丸＋余白多め
+        return (
+            "\\begin{tcolorbox}[enhanced, sharp corners=southwest, arc=4pt, "
+            "colback=white, colframe=gray!30, boxrule=0.4pt, boxsep=6pt, "
+            "borderline west={3pt}{0pt}{blue!60}]\n"
+            f"{{\\LARGE\\bfseries {title}}}{subtitle}\n"
+            "\\end{tcolorbox}\n"
+        )
+    
+ # path: lectgen/renderers/latex.py
     def _render_section(self, s: Section) -> str:
         title = s.title if s.raw else latex_escape(s.title)
-        return f"\\section*{{{title}}}"
+        return (
+            # tcbox はインライン箱。内容幅=タイトル幅になる
+            "\\noindent\\tcbox[enhanced, colback=white, colframe=white, "
+            "boxrule=0pt, left=0pt, right=0pt, top=0pt, bottom=2pt, "
+            "borderline south={0.9pt}{0pt}{blue!60}]{"
+            f"\\Large\\bfseries {title}"
+            "}%\n"
+            "\\par\n"
+        )
 
     def _render_paragraph(self, p: Paragraph) -> str:
         text = p.text if p.raw else latex_escape(p.text)
         return text
 
 # path: lectgen/renderers/latex.py
+# path: lectgen/renderers/latex.py
     def _render_terms(self, ts: Terms) -> str:
         """
-        すべての Terms を角丸の tcolorbox で描画する。
-        ts.title があれば太字の見出しとして先頭に出す（サイズは見出し内だけ適用）。
+        add_terms を角丸ボックスで描画。title があれば
+        tcolorbox の title 機能で「目印つき見出し」を付ける。
+        - ts.title: 見出しテキスト
+        - ts.content: 本文（string）。もし items 方式なら description を生成。
         """
-        heading = ""
-        if ts.title:
-            # ★ ここを { ... } で囲ってスコープ化。本文へサイズ指定が漏れない。
-            heading = f"{{\\large\\textbf{{{latex_escape(ts.title)}}}}}\\par\n"
+        # --- 本文の組み立て（content 方式 / items 方式どちらでも動く） ---
+        if hasattr(ts, "content") and isinstance(getattr(ts, "content"), str):
+            body = ts.content
+        else:
+            # 旧: Terms(items=...) にも対応（保険）
+            try:
+                items = "\n".join(self._render_term_item(it) for it in ts.items)  # type: ignore[attr-defined]
+                body = "\\begin{description}\n" + items + "\n\\end{description}"
+            except Exception:
+                body = ""
 
-        content = heading + ts.content
+        # --- タイトル（目印付き）の作成 ---
+        title_opt = ""
+        if getattr(ts, "title", None):
+            title_text = ts.title if getattr(ts, "raw", False) else latex_escape(ts.title)  # type: ignore[arg-type]
+            # 見出しだけ大きくするが、サイズは見出しの中だけに閉じ込める
+            title_latex = (
+                "{\\large\\bfseries "
+                f"{latex_escape(self.terms_title_marker)}\\;{title_text}"
+                "}"
+            )
+            title_opt = f"title={{{title_latex}}}, fonttitle=\\bfseries, coltitle={self.terms_title_fg}, colbacktitle={self.terms_title_bg}"
+
+        # --- tcolorbox で全体を出力 ---
+        # タイトルがあるときは title オプション付き、ないときは通常ボックス
+        options_common = (
+            f"enhanced, boxrule={self.terms_box_rule}, arc={self.terms_box_arc}, "
+            f"boxsep={self.terms_box_sep}, colback=white, colframe=black"
+        )
+        if title_opt:
+            options = options_common + ", " + title_opt
+        else:
+            options = options_common
+
         return (
-            "\\begin{tcolorbox}[enhanced, colback=white, colframe=black, boxrule=0.4pt, arc=5pt]\n"
-            f"{content}\n"
+            f"\\begin{{tcolorbox}}[{options}]\n"
+            f"{body}\n"
             "\\end{tcolorbox}\n"
         )
 
