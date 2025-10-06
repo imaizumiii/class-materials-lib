@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from typing import List, Sequence, Optional
 
 from .nodes import (
-    Node, Title, Paragraph, Terms, Section, TermItem, FigureSpace
+    Node, Title, Paragraph, Terms, Section, TermItem, FigureSpace, ListBlock
 )
 
 @dataclass
@@ -71,3 +71,23 @@ class Document:
                 rule=rule,
             )
         )
+    
+    def add_list(
+        self,
+        items: list[str],
+        *,
+        title: str | None = None,
+        title_marker: str = "●",
+        style: str = "itemize",
+        boxed: bool = False,
+        margin_before: str = "6pt",  # タイトルの上余白
+        margin_after: str = "6pt",   # 箇条書き全体の下余白
+    ) -> None:
+        """
+        箇条書き（itemize/enumerate）を追加。
+        - items: 箇条書き項目（リスト）
+        - title: リストの見出し（任意）
+        - style: 'itemize'（黒丸）または 'enumerate'（番号付き）
+        - boxed: True なら枠で囲む
+        """
+        self.nodes.append(ListBlock(items=items, title=title,title_marker=title_marker, style=style, boxed=boxed, margin_before=margin_before, margin_after=margin_after))

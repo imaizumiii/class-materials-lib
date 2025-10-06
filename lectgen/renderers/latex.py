@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from .base import Renderer
 from ..document import Document
-from ..nodes import Title, Section, Paragraph, Terms, TermItem, FigureSpace
+from ..nodes import Title, Section, Paragraph, Terms, TermItem, FigureSpace, ListBlock
 from ..utils.text import latex_escape
 
 @dataclass
@@ -45,6 +45,8 @@ class LatexRenderer(Renderer):
             return self._render_terms(n)
         if isinstance(n, FigureSpace):
             return self._render_figure_space(n)
+        if isinstance(n, ListBlock):
+            return self._render_listblock(n)
         raise TypeError(f"Unsupported node: {type(n).__name__}")
 
     # path: lectgen/renderers/latex.py
@@ -193,3 +195,35 @@ class LatexRenderer(Renderer):
         boxes = "".join(f"\\begin{{tcolorbox}}[{box_opts}]\\end{{tcolorbox}}\n" for _ in range(cols))
 
         return wrap_begin + raster_begin + boxes + raster_end + wrap_end
+    
+    def _render_listblock(self, lb: ListBlock) -> str:
+        marker = latex_escape(getattr(lb, "title_marker", "●"))
+        heading = (
+            f"\\vspace*{{{lb.margin_before}}}\\noindent"
+            f"\\textbf{{{marker}\\;{latex_escape(lb.title)}}}\\\\[-24pt]\n"
+        )
+        
+        body = [f"  \\item {latex_escape(it)}" for it in lb.items]
+        env = lb.style if lb.style in ("itemize", "enumerate") else "itemize"
+
+        # ★ 角括弧を使わず、内部で余白を設定
+        list_env = (
+            f"\\begin{{{env}}}\n"
+            "\\setlength{\\topsep}{2pt}%\n"
+            "\\setlength{\\itemsep}{2pt}%\n"
+            "\\setlength{\\parsep}{0pt}%\n"
+            "\\setlength{\\partopsep}{0pt}%\n"
+            + "\n".join(body)
+            + f"\n\\end{{{env}}}"
+        )
+
+        content = heading + list_env + f"\\vspace*{{{lb.margin_after}}}\n"
+
+        if lb.boxed:
+            return (
+                "\\begin{tcolorbox}[enhanced, colback=white, colframe=black, "
+                "boxrule=0.4pt, arc=4pt, boxsep=6pt]\n"
+                f"{content}\n"
+                "\\end{tcolorbox}\n"
+            )
+        return content

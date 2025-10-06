@@ -21,7 +21,7 @@ doc.add_figure_space(
     height="200pt",         # 各ボックスの高さ
     count=1,               # 3つ横並び
     margin_top="0pt",     # 外側マージン（上）
-    margin_bottom="20pt",  # 外側マージン（下）
+    margin_bottom="10pt",  # 外側マージン（下）
     margin_left="0pt",     # 外側マージン（左）
     margin_right="0pt",    # 外側マージン（右）
     gap="6pt",             # ボックス間の横ギャップ
@@ -29,8 +29,19 @@ doc.add_figure_space(
     rule="0.4pt",          # 枠の太さ
 )
 
-doc.add_paragraph("メリット: \n 1. シンプルで理解しやすい \n 2. 計算が早い、スケーラブル \n 3. 結果が分かりやすく、可視化しやすい", raw=True)
-
+doc.add_list(
+    items=[
+        "シンプルで理解しやすい",
+        "計算が早くスケーラブル",
+        "結果が分かりやすく、可視化しやすい",
+    ],
+    title="メリット",
+    title_marker= "▶",
+    style="itemize",  # または "enumerate"
+    boxed=False,   
+    margin_before="8pt",
+    margin_after="4pt"
+)
 
 
 renderer = LatexRenderer(

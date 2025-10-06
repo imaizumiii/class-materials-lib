@@ -52,3 +52,20 @@ class FigureSpace:
     gap: str = "6pt"          # ボックス間ギャップ（横）
     arc: str = "4pt"          # 角丸
     rule: str = "0.4pt"       # 枠線の太さ
+    
+@dataclass(frozen=True)
+class ListBlock:
+    """
+    箇条書きリスト。
+    - items: 箇条書き項目（文字列のリスト）
+    - title: 見出し（任意）
+    - style: 'itemize' または 'enumerate'
+    - boxed: 枠で囲むかどうか
+    """
+    items: List[str]
+    title: str | None = None
+    title_marker: str = "●"
+    style: str = "itemize"
+    boxed: bool = False
+    margin_before: str = "6pt"  # タイトルの上余白
+    margin_after: str = "6pt"   # 箇条書き全体の下余白
