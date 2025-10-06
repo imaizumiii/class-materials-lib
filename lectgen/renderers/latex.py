@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from .base import Renderer
 from ..document import Document
-from ..nodes import Title, Section, Paragraph, Terms, TermItem
+from ..nodes import Title, Section, Paragraph, Terms, TermItem, FigureSpace
 from ..utils.text import latex_escape
 
 @dataclass
@@ -22,6 +22,8 @@ class LatexRenderer(Renderer):
     terms_box_arc: str = "5pt"         # 枠角の丸み
     terms_box_rule: str = "0.4pt"      # 枠線の太さ
     terms_box_sep: str = "6pt"         # 内側余白（padding）
+    terms_box_before_skip: str = "20pt"  # 外側余白（margin）
+    terms_box_after_skip: str = "6pt"   
 
     # 既存の terms_box/terms_box_options があっても無視してOK（後方互換のため残してもよい）
 
@@ -41,6 +43,8 @@ class LatexRenderer(Renderer):
             return self._render_paragraph(n)
         if isinstance(n, Terms):
             return self._render_terms(n)
+        if isinstance(n, FigureSpace):
+            return self._render_figure_space(n)
         raise TypeError(f"Unsupported node: {type(n).__name__}")
 
     # path: lectgen/renderers/latex.py
@@ -66,7 +70,7 @@ class LatexRenderer(Renderer):
         return (
             # tcbox はインライン箱。内容幅=タイトル幅になる
             "\\noindent\\tcbox[enhanced, colback=white, colframe=white, "
-            "boxrule=0pt, left=0pt, right=0pt, top=0pt, bottom=2pt, "
+            "boxrule=0pt, left=0pt, right=0pt, top=10pt, bottom=2pt, "
             "borderline south={0.9pt}{0pt}{blue!60}]{"
             f"\\Large\\bfseries {title}"
             "}%\n"
@@ -77,7 +81,6 @@ class LatexRenderer(Renderer):
         text = p.text if p.raw else latex_escape(p.text)
         return text
 
-# path: lectgen/renderers/latex.py
 # path: lectgen/renderers/latex.py
     def _render_terms(self, ts: Terms) -> str:
         """
@@ -113,10 +116,11 @@ class LatexRenderer(Renderer):
         # タイトルがあるときは title オプション付き、ないときは通常ボックス
         options_common = (
             f"enhanced, boxrule={self.terms_box_rule}, arc={self.terms_box_arc}, "
-            f"boxsep={self.terms_box_sep}, colback=white, colframe=black"
+            f"boxsep={self.terms_box_sep}, colback=white, colframe=black, "
+            f"before skip={self.terms_box_before_skip}, after skip={self.terms_box_after_skip}"
         )
         if title_opt:
-            options = options_common + ", " + title_opt
+            options = options_common + (", " + title_opt if title_opt else "")
         else:
             options = options_common
 
@@ -141,3 +145,51 @@ class LatexRenderer(Renderer):
             f"{self.end_document}\n"
             "\\end{document}\n"
         )
+        
+    def _render_figure_space(self, fs: FigureSpace) -> str:
+        """
+        tcolorbox の tcbraster を用いて、flex風に横並びの空ボックス群を描画。
+        横方向マージンは minipage の幅を縮めて確保。
+        縦方向マージンは前後の \vspace* で確保。
+        """
+        # 安全側：個数が1未満なら1に
+        cols = max(1, int(fs.count))
+
+        # tcbraster の列間隔
+        colskip = fs.gap
+
+        # ラッパー（minipage）の幅 = 全幅 - 左右マージン
+        wrap_begin = (
+            f"\\par\\vspace*{{{fs.margin_top}}}%\n"
+            f"\\noindent\\hspace*{{{fs.margin_left}}}%\n"
+            f"\\begin{{minipage}}{{\\dimexpr\\linewidth - {fs.margin_left} - {fs.margin_right}\\relax}}\n"
+        )
+        wrap_end = (
+            "\\end{minipage}%\n"
+            f"\\hspace*{{{fs.margin_right}}}\\par\\vspace*{{{fs.margin_bottom}}}\n"
+        )
+
+        # 中の空ボックス（枠あり・角丸・指定の高さ）
+        # boxsep=0pt, left/right/top/bottom=0pt で“純粋な空き領域”に近づける
+        box_opts = (
+            f"enhanced, colback=white, colframe=black, "
+            f"boxrule={fs.rule}, arc={fs.arc}, "
+            "boxsep=0pt, left=0pt, right=0pt, top=0pt, bottom=0pt, "
+            f"height={fs.height}"
+        )
+
+        # tcbraster（columns=cols, raster column skip = gap）
+        raster_begin = (
+            "\\begin{tcbraster}["
+            f"raster columns={cols}, "
+            f"raster column skip={colskip}, "
+            "raster left skip=0pt, raster right skip=0pt, "
+            "raster before skip=0pt, raster after skip=0pt"
+            "]\n"
+        )
+        raster_end = "\\end{tcbraster}\n"
+
+        # 空ボックスを columns 個生成（中身は空）
+        boxes = "".join(f"\\begin{{tcolorbox}}[{box_opts}]\\end{{tcolorbox}}\n" for _ in range(cols))
+
+        return wrap_begin + raster_begin + boxes + raster_end + wrap_end

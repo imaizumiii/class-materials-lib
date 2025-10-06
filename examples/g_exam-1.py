@@ -7,29 +7,30 @@ filename = "教師なし学習.tex"
 
 doc = Document()
 
-doc.add_title("タイトル")
+doc.add_title("教師なし学習")
 
-doc.add_section("セクション")
+doc.add_section("k-means法")
 
 doc.add_terms(
-    "add-termsで出力",
-    title="タイトル",
+    "データをk個のクラスタに分ける代表的手法",
+    title="k-means法",
     boxed=True
 )
 
-doc.add_paragraph("区間 $[a,b]$ を縮めていくと、極限として瞬間変化率が得られます。", raw=True)
-
 doc.add_figure_space(
-    height="100pt",         # 各ボックスの高さ
-    count=2,               # 3つ横並び
-    margin_top="12pt",     # 外側マージン（上）
-    margin_bottom="12pt",  # 外側マージン（下）
+    height="200pt",         # 各ボックスの高さ
+    count=1,               # 3つ横並び
+    margin_top="0pt",     # 外側マージン（上）
+    margin_bottom="20pt",  # 外側マージン（下）
     margin_left="0pt",     # 外側マージン（左）
     margin_right="0pt",    # 外側マージン（右）
     gap="6pt",             # ボックス間の横ギャップ
     arc="4pt",             # 角丸
     rule="0.4pt",          # 枠の太さ
 )
+
+doc.add_paragraph("メリット: \n 1. シンプルで理解しやすい \n 2. 計算が早い、スケーラブル \n 3. 結果が分かりやすく、可視化しやすい", raw=True)
+
 
 
 renderer = LatexRenderer(

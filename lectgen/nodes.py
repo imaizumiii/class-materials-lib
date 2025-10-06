@@ -35,3 +35,20 @@ class Terms:
     content: str
     title: str | None = None
     boxed: bool = False
+    
+@dataclass(frozen=True)
+class FigureSpace:
+    """
+    PDF化後に図を貼るための“空き箱”を並べるためのノード。
+    高さ・本数・外側マージン・角丸・枠線・箱間ギャップを指定。
+    すべて TeX の長さ（pt, mm, cm 等）で指定可能。
+    """
+    height: str = "50pt"      # 各ボックスの高さ（既定: 50pt）
+    count: int = 1            # ボックスの個数（横に並べる）
+    margin_top: str = "0pt"   # 上外側マージン
+    margin_bottom: str = "0pt"# 下外側マージン
+    margin_left: str = "0pt"  # 左外側マージン
+    margin_right: str = "0pt" # 右外側マージン
+    gap: str = "6pt"          # ボックス間ギャップ（横）
+    arc: str = "4pt"          # 角丸
+    rule: str = "0.4pt"       # 枠線の太さ
