@@ -1,10 +1,9 @@
-# path: lectgen/renderers/latex.py
 from __future__ import annotations
 from dataclasses import dataclass
 
 from .base import Renderer
 from ..document import Document
-from ..nodes import Title, Section, Paragraph, Terms, TermItem, FigureSpace, ListBlock
+from ..nodes import Title, Section, Paragraph, Terms, TermItem, FigureSpace, ListBlock, PageBreak
 from ..utils.text import latex_escape
 
 @dataclass
@@ -47,6 +46,8 @@ class LatexRenderer(Renderer):
             return self._render_figure_space(n)
         if isinstance(n, ListBlock):
             return self._render_listblock(n)
+        if isinstance(n, PageBreak):                  # ★ 追加
+            return self._render_pagebreak(n)
         raise TypeError(f"Unsupported node: {type(n).__name__}")
 
     # path: lectgen/renderers/latex.py
@@ -66,10 +67,16 @@ class LatexRenderer(Renderer):
             "\\end{tcolorbox}\n"
         )
     
+    def _render_pagebreak(self, _: PageBreak) -> str:
+    # \newpage でも良いが、未処理の浮動体を流したい時は \clearpage が堅い
+        return "\\clearpage\n"
  # path: lectgen/renderers/latex.py
     def _render_section(self, s: Section) -> str:
         title = s.title if s.raw else latex_escape(s.title)
+        margin_before = getattr(s, "margin_before", "-4pt")
+        margin_after = getattr(s, "margin_after", "-4pt")
         return (
+            f"\\vspace*{{{margin_before}}}\n"
             # tcbox はインライン箱。内容幅=タイトル幅になる
             "\\noindent\\tcbox[enhanced, colback=white, colframe=white, "
             "boxrule=0pt, left=0pt, right=0pt, top=10pt, bottom=2pt, "
@@ -77,6 +84,7 @@ class LatexRenderer(Renderer):
             f"\\Large\\bfseries {title}"
             "}%\n"
             "\\par\n"
+            f"\\vspace*{{{margin_after}}}\n"
         )
 
     def _render_paragraph(self, p: Paragraph) -> str:

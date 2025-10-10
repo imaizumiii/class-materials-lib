@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from typing import List, Sequence, Optional
 
 from .nodes import (
-    Node, Title, Paragraph, Terms, Section, TermItem, FigureSpace, ListBlock
+    Node, Title, Paragraph, Terms, Section, TermItem, FigureSpace, ListBlock, PageBreak
 )
 
 @dataclass
@@ -12,6 +12,9 @@ class Document:
     """授業資料（ノードのコンテナ）"""
     nodes: List[Node] = field(default_factory=list)
 
+    def add_pagebreak(self) -> None:
+        """次のページに移行（LaTeXの改ページ）"""
+        self.nodes.append(PageBreak())
     # 直感的なAPI（KISS）
     def add_title(self, title: str, subtitle: Optional[str] = None, *, raw: bool = False) -> None:
         self.nodes.append(Title(title=title, subtitle=subtitle, raw=raw))
@@ -19,8 +22,23 @@ class Document:
     def add_paragraph(self, text: str, *, raw: bool = False) -> None:
         self.nodes.append(Paragraph(text=text, raw=raw))
 
-    def add_section(self, title: str, *, raw: bool = False) -> None:
-        self.nodes.append(Section(title=title, raw=raw))
+    def add_section(
+        self,
+        title: str,
+        *,
+        raw: bool = False,
+        margin_before: str = "6pt",
+        margin_after: str = "2pt",
+    ) -> None:
+        """セクション見出しを追加"""
+        self.nodes.append(
+            Section(
+                title=title,
+                raw=raw,
+                margin_before=margin_before,
+                margin_after=margin_after,
+            )
+        )
 
     def add_terms(
         self,

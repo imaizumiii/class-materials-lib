@@ -24,8 +24,10 @@
 \end{tcolorbox}
 
 
+\vspace*{6pt}
 \noindent\tcbox[enhanced, colback=white, colframe=white, boxrule=0pt, left=0pt, right=0pt, top=10pt, bottom=2pt, borderline south={0.9pt}{0pt}{blue!60}]{\Large\bfseries k-means法}%
 \par
+\vspace*{2pt}
 
 
 \begin{tcolorbox}[enhanced, boxrule=0.4pt, arc=5pt, boxsep=6pt, colback=white, colframe=black, before skip=20pt, after skip=6pt, title={{\large\bfseries ●\;k-means法}}, fonttitle=\bfseries, coltitle=black, colbacktitle=blue!6]
@@ -53,6 +55,37 @@
   \item 計算が早くスケーラブル
   \item 結果が分かりやすく、可視化しやすい
 \end{itemize}\vspace*{4pt}
+
+
+\vspace*{8pt}\noindent\textbf{▷\;デメリット}\\[-24pt]
+\begin{itemize}
+\setlength{\topsep}{2pt}%
+\setlength{\itemsep}{2pt}%
+\setlength{\parsep}{0pt}%
+\setlength{\partopsep}{0pt}%
+  \item クラスタ数 k を事前に決める必要がある
+  \item 外れ値（outlier）に弱い
+  \item 特徴量のスケールに敏感
+\end{itemize}\vspace*{4pt}
+
+
+\clearpage
+
+
+\begin{tcolorbox}[enhanced, sharp corners=southwest, arc=4pt, colback=white, colframe=gray!30, boxrule=0.4pt, boxsep=6pt, borderline west={3pt}{0pt}{blue!60}]
+{\LARGE\bfseries 教師なし学習}
+\end{tcolorbox}
+
+
+\vspace*{-6pt}
+\noindent\tcbox[enhanced, colback=white, colframe=white, boxrule=0pt, left=0pt, right=0pt, top=10pt, bottom=2pt, borderline south={0.9pt}{0pt}{blue!60}]{\Large\bfseries 階層的クラスタリング}%
+\par
+\vspace*{-6pt}
+
+
+\begin{tcolorbox}[enhanced, boxrule=0.4pt, arc=5pt, boxsep=6pt, colback=white, colframe=black, before skip=20pt, after skip=6pt, title={{\large\bfseries ●\;階層的クラスタリング}}, fonttitle=\bfseries, coltitle=black, colbacktitle=blue!6]
+データを階層的にまとめ、木構造（デンドログラム）で関係を表す手法
+\end{tcolorbox}
 
 
 \end{document}

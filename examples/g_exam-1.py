@@ -43,6 +43,31 @@ doc.add_list(
     margin_after="4pt"
 )
 
+doc.add_list(
+    items=[
+        "クラスタ数 k を事前に決める必要がある",
+        "外れ値（outlier）に弱い",
+        "特徴量のスケールに敏感",
+    ],
+    title="デメリット",
+    title_marker= "▷",
+    style="itemize",  # または "enumerate"
+    boxed=False,   
+    margin_before="8pt",
+    margin_after="4pt"
+)
+
+doc.add_pagebreak() 
+
+doc.add_title("教師なし学習")
+
+doc.add_section("階層的クラスタリング", margin_before="-6pt", margin_after="-6pt")
+
+doc.add_terms(
+    "データを階層的にまとめ、木構造（デンドログラム）で関係を表す手法",
+    title="階層的クラスタリング",
+    boxed=True
+)
 
 renderer = LatexRenderer(
     docclass="ltjsarticle",  # LuaLaTeX + Japanese の例

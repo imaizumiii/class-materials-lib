@@ -8,6 +8,11 @@ class Node(Protocol):
     pass
 
 @dataclass(frozen=True)
+class PageBreak:
+    """ページを明示的に改ページするためのノード"""
+    pass
+
+@dataclass(frozen=True)
 class Title:
     title: str
     subtitle: str | None = None
@@ -15,8 +20,11 @@ class Title:
 
 @dataclass(frozen=True)
 class Section:
+    """セクション見出し"""
     title: str
     raw: bool = False
+    margin_before: str = "6pt"  # 追加：見出しの前の余白
+    margin_after: str = "2pt"   # 追加：見出しの後の余白
 
 @dataclass(frozen=True)
 class Paragraph:
@@ -69,3 +77,4 @@ class ListBlock:
     boxed: bool = False
     margin_before: str = "6pt"  # タイトルの上余白
     margin_after: str = "6pt"   # 箇条書き全体の下余白
+    

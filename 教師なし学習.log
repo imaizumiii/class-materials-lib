@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.21.0 (TeX Live 2025)  (format=lualatex 2025.4.14)  6 OCT 2025 20:11
+This is LuaHBTeX, Version 1.21.0 (TeX Live 2025)  (format=lualatex 2025.4.14)  7 OCT 2025 09:57
  restricted system commands enabled.
 **教師なし学習.tex
 (./教師なし学習.tex
@@ -1321,40 +1321,40 @@ LaTeX Font Info:    Font shape `JT3/HaranoAjiGothic-Medium.otf(0)/b/n' will be
 LaTeX Font Info:    Font shape `JY3/HaranoAjiGothic-Medium.otf(0)/b/n' will be
 (Font)              scaled to size 15.97903pt on input line 23.
 LaTeX Font Info:    Font shape `JT3/HaranoAjiGothic-Medium.otf(0)/m/n' will be
-(Font)              scaled to size 13.31586pt on input line 27.
+(Font)              scaled to size 13.31586pt on input line 28.
 LaTeX Font Info:    Font shape `JY3/HaranoAjiGothic-Medium.otf(0)/m/n' will be
-(Font)              scaled to size 13.31586pt on input line 27.
+(Font)              scaled to size 13.31586pt on input line 28.
 LaTeX Font Info:    Font shape `JT3/HaranoAjiGothic-Medium.otf(0)/b/n' will be
-(Font)              scaled to size 13.31586pt on input line 27.
+(Font)              scaled to size 13.31586pt on input line 28.
 LaTeX Font Info:    Font shape `JY3/HaranoAjiGothic-Medium.otf(0)/b/n' will be
-(Font)              scaled to size 13.31586pt on input line 27.
+(Font)              scaled to size 13.31586pt on input line 28.
 LaTeX Font Info:    Font shape `JT3/HaranoAjiGothic-Medium.otf(0)/b/n' will be
-(Font)              scaled to size 10.17184pt on input line 31.
+(Font)              scaled to size 10.17184pt on input line 33.
 LaTeX Font Info:    Font shape `JY3/HaranoAjiGothic-Medium.otf(0)/b/n' will be
-(Font)              scaled to size 10.17184pt on input line 31.
+(Font)              scaled to size 10.17184pt on input line 33.
 LaTeX Font Info:    Font shape `JT3/HaranoAjiGothic-Medium.otf(0)/b/n' will be
-(Font)              scaled to size 11.09656pt on input line 31.
+(Font)              scaled to size 11.09656pt on input line 33.
 LaTeX Font Info:    Font shape `JY3/HaranoAjiGothic-Medium.otf(0)/b/n' will be
-(Font)              scaled to size 11.09656pt on input line 31.
-LaTeX Font Info:    Calculating math sizes for size <11> on input line 42.
+(Font)              scaled to size 11.09656pt on input line 33.
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 44.
 (load cache: extra_lmroman12-regular.luc)(load cache: extra_lmroman6-regular.luc
 )
 LaTeX Font Info:    Font shape `JY3/HaranoAjiMincho-Regular.otf(0)/m/n' will be
 
-(Font)              scaled to size 10.17184pt on input line 42.
+(Font)              scaled to size 10.17184pt on input line 44.
 LaTeX Font Info:    Font shape `JY3/HaranoAjiMincho-Regular.otf(0)/m/n' will be
 
-(Font)              scaled to size 7.12025pt on input line 42.
+(Font)              scaled to size 7.12025pt on input line 44.
 LaTeX Font Info:    Font shape `JY3/HaranoAjiMincho-Regular.otf(0)/m/n' will be
 
-(Font)              scaled to size 5.08592pt on input line 42.
-LaTeX Font Info:    Trying loading font information for U+msa on input line 42.
+(Font)              scaled to size 5.08592pt on input line 44.
+LaTeX Font Info:    Trying loading font information for U+msa on input line 44.
 
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying loading font information for U+msb on input line 42.
+LaTeX Font Info:    Trying loading font information for U+msb on input line 44.
 
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1362,19 +1362,22 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `JY3/HaranoAjiMincho-Regular.otf(0)/b/n' will be
 
-(Font)              scaled to size 10.17184pt on input line 42.
+(Font)              scaled to size 10.17184pt on input line 44.
 LaTeX Font Info:    Font shape `JY3/HaranoAjiMincho-Regular.otf(0)/b/n' will be
 
-(Font)              scaled to size 7.12025pt on input line 42.
+(Font)              scaled to size 7.12025pt on input line 44.
 LaTeX Font Info:    Font shape `JY3/HaranoAjiMincho-Regular.otf(0)/b/n' will be
 
-(Font)              scaled to size 5.08592pt on input line 42.
+(Font)              scaled to size 5.08592pt on input line 44.
 
 
 [1
 
 {/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-(./教師なし学習.aux)
+
+[2
+
+] (./教師なし学習.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -1382,14 +1385,14 @@ L3 programming layer <2025-01-18>
 )
 
 Here is how much of LuaTeX's memory you used:
- 26545 strings out of 475506
+ 26548 strings out of 475506
  125244,1144653 words of node,token memory allocated
  3772 words of node memory still in use:
    34 hlist, 2 vlist, 17 rule, 2 glue, 4 kern, 1 glyph, 1162 attribute, 54 glue_
 spec, 136 attribute_list, 2 write, 37 user_defined, 24 pdf_literal, 24 pdf_color
 stack nodes
-   avail lists: 1:11,2:12587,3:759,4:374,5:28,6:24,7:806,8:1,9:456,11:4
- 48826 multiletter control sequences out of 65536+600000
+   avail lists: 1:11,2:15238,3:811,4:416,5:32,6:32,7:1102,8:1,9:578,11:6
+ 48829 multiletter control sequences out of 65536+600000
  76 fonts using 79918015 bytes
  125i,9n,128p,1862b,1116s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/opentype/public/lm/lmsans10-regular.ot
@@ -1397,10 +1400,10 @@ f></usr/local/texlive/2025/texmf-dist/fonts/opentype/public/lm/lmsans12-regular.
 otf></usr/local/texlive/2025/texmf-dist/fonts/opentype/public/lm/lmsans10-bold.o
 tf></usr/local/texlive/2025/texmf-dist/fonts/opentype/public/haranoaji/HaranoAji
 Gothic-Medium.otf>
-Output written on 教師なし学習.pdf (1 page, 20344 bytes).
+Output written on 教師なし学習.pdf (2 pages, 28821 bytes).
 
-PDF statistics: 75 PDF objects out of 1000 (max. 8388607)
- 35 compressed objects within 1 object stream
+PDF statistics: 78 PDF objects out of 1000 (max. 8388607)
+ 37 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 131072)
  256 words of extra memory for PDF output out of 10000 (max. 100000000)
 
